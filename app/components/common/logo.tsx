@@ -2,7 +2,9 @@ export const Logo = ({ variant = "header" }: { variant?: "login" | "header" }) =
   const isHeader = variant === "header";
 
   return (
-    <div className={`flex items-center ${isHeader ? "flex-row gap-2" : "flex-col gap-3"}`}>
+    /* Added justify-center for horizontal centering and w-full to ensure it takes up space */
+    <div className={`flex items-center justify-center ${isHeader ? "flex-row gap-2" : "flex-col gap-3 w-full text-center"}`}>
+      
       {/* Icon Box */}
       <div className={`
         bg-[#7f56d9] rounded-xl flex items-center justify-center shadow-[0_4px_12px_rgba(127,86,217,0.3)]
@@ -15,8 +17,8 @@ export const Logo = ({ variant = "header" }: { variant?: "login" | "header" }) =
 
       {/* Text */}
       <h1 className={`
-        font-black tracking-tighter uppercase
-        ${isHeader ? "text-lg text-slate-800" : "text-2xl text-white"}
+        font-black tracking-tighter uppercase leading-none
+        ${isHeader ? "text-lg text-white" : "text-2xl text-white"}
       `}>
         Nitroberry
       </h1>
