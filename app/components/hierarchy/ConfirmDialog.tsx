@@ -33,7 +33,7 @@ export const ConfirmDialog = ({
         >
           <div className="flex items-center gap-3 mb-4">
             <div
-              className={`p-2 rounded-lg ${variant === "danger" ? "bg-red-50 text-red-600" : "bg-indigo-50 text-[#7f56d9]"}`}
+              className={`p-2 rounded-lg ${variant === "danger" ? "bg-red-50 text-red-600" : "bg-[#7f56d9] text-[#7f56d9]"}`}
             >
               <AlertTriangle size={24} />
             </div>

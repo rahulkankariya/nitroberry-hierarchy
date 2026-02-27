@@ -8,14 +8,25 @@ import {
   Trash2,
   User,
 } from "lucide-react";
-import { Employee, TreeNodeProps } from "@/app/types/hierarchy";
+import { Employee } from "@/app/types/hierarchy";
 
-
+// Local Interface for clarity
+interface TreeNodeProps {
+  node: Employee;
+  layout: "vertical" | "horizontal";
+  expandedIds: Set<string>;
+  isRoot?: boolean;
+  onEdit: (node: Employee) => void;
+  onAdd: (mgrId: string) => void;
+  onDelete: (id: string) => void;
+  onToggle: (id: string) => void;
+}
 
 export function TreeNode({
   node,
   layout,
   expandedIds,
+  isRoot = false, // Default to false for recursive children
   onEdit,
   onAdd,
   onDelete,
@@ -29,9 +40,8 @@ export function TreeNode({
     <div
       className={`flex items-center ${layout === "vertical" ? "flex-col" : "flex-row"}`}
     >
-      {/* CARD AND CONNECTOR CONTAINER */}
       <div className="relative flex items-center group">
-        {/* Incoming Line (Parent to this Node) */}
+        {/* Incoming Line */}
         {node.managerId && (
           <div
             className={`absolute bg-slate-300 transition-all duration-300 ${
@@ -42,19 +52,18 @@ export function TreeNode({
           />
         )}
 
-        {/* User Card - Styled with your Old UI logic */}
-        <div className="z-10 bg-white border border-slate-200 p-5 rounded-3xl shadow-md w-80 hover:border-indigo-500 hover:shadow-xl transition-all duration-300">
+        {/* User Card */}
+        <div className="z-10 bg-white border border-slate-200 p-5 rounded-3xl shadow-md w-80 hover:border-[#7f56d9] hover:shadow-xl transition-all duration-300">
           <div className="flex justify-between items-start mb-4">
             <div className="flex items-center gap-3">
-              {/* Gradient Icon Wrapper */}
-              <div className="p-2.5 bg-linear-to-br from-indigo-500 to-purple-600 rounded-2xl text-white shadow-lg shrink-0">
+              <div className="p-2.5 bg-linear-to-br from-[#7f56d9] to-purple-600 rounded-2xl text-white shadow-lg shrink-0">
                 <User size={20} strokeWidth={2.5} />
               </div>
               <div className="max-w-30">
                 <h3 className="font-bold text-slate-800 text-sm leading-tight truncate">
                   {node.name}
                 </h3>
-                <p className="text-[10px] text-indigo-500 font-black uppercase tracking-widest mt-0.5 truncate">
+                <p className="text-[10px] text-[#7f56d9] font-black uppercase tracking-widest mt-0.5 truncate">
                   {node.title || "Team Member"}
                 </p>
               </div>
@@ -69,24 +78,29 @@ export function TreeNode({
               >
                 <Plus size={15} />
               </button>
-              <button
-                onClick={() => onEdit(node)}
-                className="p-2 bg-indigo-50 text-[#7f56d9] rounded-xl hover:bg-[#7f56d9] hover:text-white transition-all"
-                title="Edit"
-              >
-                <Pencil size={15} />
-              </button>
-              <button
-                onClick={() => onDelete(node.id)}
-                className="p-2 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition-all"
-                title="Delete"
-              >
-                <Trash2 size={15} />
-              </button>
+              
+              {/* Only show Edit/Delete if NOT root */}
+              {!isRoot && (
+                <>
+                  <button
+                    onClick={() => onEdit(node)}
+                    className="p-2 bg-[#7f56d9] text-white rounded-xl hover:bg-[#7f56d9] hover:text-white transition-all"
+                    title="Edit"
+                  >
+                    <Pencil size={15} />
+                  </button>
+                  <button
+                    onClick={() => onDelete(node.id)}
+                    className="p-2 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition-all"
+                    title="Delete"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
-          {/* Bottom Info Row */}
           <div className="flex justify-between items-center pt-3 border-t border-slate-100">
             <div className="flex flex-col">
               <span className="text-[9px] font-bold text-slate-400 uppercase">
@@ -116,7 +130,7 @@ export function TreeNode({
           </div>
         </div>
 
-        {/* Outgoing Line (This Node to Children) */}
+        {/* Outgoing Line */}
         {isExpanded && hasChildren && (
           <div
             className={`absolute bg-slate-300 transition-all duration-300 ${
@@ -128,7 +142,7 @@ export function TreeNode({
         )}
       </div>
 
-      {/* RENDER CHILDREN RECURSIVELY */}
+      {/* Recursive Children */}
       {isExpanded && hasChildren && (
         <div
           className={`flex relative ${
@@ -141,6 +155,7 @@ export function TreeNode({
               node={child}
               layout={layout}
               expandedIds={expandedIds}
+              isRoot={false} // Ensure children are editable
               onEdit={onEdit}
               onAdd={onAdd}
               onDelete={onDelete}

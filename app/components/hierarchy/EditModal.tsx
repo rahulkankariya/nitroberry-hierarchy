@@ -70,7 +70,7 @@ export const EditModal = ({
             />
             <input
               autoFocus
-              className="w-full bg-white p-4 pl-12 rounded-2xl border-2 border-transparent focus:border-indigo-500 text-sm font-bold outline-none shadow-sm"
+              className="w-full bg-white p-4 pl-12 rounded-2xl border-2 border-transparent focus:border-[#7f56d9] text-sm font-bold outline-none shadow-sm"
               placeholder="Search directory..."
               value={searchTerm}
               onChange={(e) => onSearch(e.target.value)}
@@ -97,11 +97,11 @@ export const EditModal = ({
                       title: "Team Member",
                     })
                   }
-                  className={`w-full flex items-center justify-between p-4 my-1 rounded-2xl transition-all ${node.userId === u.id ? "bg-indigo-600 text-white shadow-lg" : "hover:bg-slate-50 text-slate-600"}`}
+                  className={`w-full flex items-center justify-between p-4 my-1 rounded-2xl transition-all ${node.userId === u.id ? "bg-[#7f56d9] text-white shadow-lg" : "hover:bg-slate-50 text-slate-600"}`}
                 >
                   <div className="flex items-center gap-3 text-left">
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black shrink-0 ${node.userId === u.id ? "bg-white/20" : "bg-indigo-100 text-indigo-600"}`}
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black shrink-0 ${node.userId === u.id ? "bg-white/20" : "bg-[#7f56d9] text-white"}`}
                     >
                       {u.firstName?.[0]}
                       {u.lastName?.[0]}
@@ -124,14 +124,14 @@ export const EditModal = ({
               ))}
               {isLoading && (
                 <div className="p-4 flex justify-center">
-                  <Loader2 className="animate-spin text-indigo-600" size={20} />
+                  <Loader2 className="animate-spin text-[#7f56d9]" size={20} />
                 </div>
               )}
             </>
           ) : (
             <div className="h-64 flex flex-col items-center justify-center text-slate-400 gap-2 opacity-60">
               {isLoading ? (
-                <Loader2 className="animate-spin text-indigo-600" />
+                <Loader2 className="animate-spin text-[#7f56d9]" />
               ) : (
                 <p className="text-xs font-bold uppercase tracking-wider">
                   No results found
@@ -152,7 +152,7 @@ export const EditModal = ({
           <button
             disabled={!node.userId || isSaving}
             onClick={() => onSave(node)}
-            className="flex-2 p-4 bg-indigo-600 text-white font-black rounded-2xl shadow-xl hover:bg-indigo-700 disabled:opacity-50 transition-all uppercase text-[11px] tracking-widest flex items-center justify-center gap-2"
+            className="flex-2 p-4 bg-[#7f56d9] text-white font-black rounded-2xl shadow-xl hover:bg-[#7f56d9] disabled:opacity-50 transition-all uppercase text-[11px] tracking-widest flex items-center justify-center gap-2"
           >
             {isSaving ? (
               <>

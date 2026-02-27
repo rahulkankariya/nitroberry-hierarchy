@@ -88,47 +88,46 @@ export default function OrgHierarchyContainer() {
       setDeleteConfirmId(null);
     }
   };
+
   // Search Logic (Debounced)
-useEffect(() => {
-  if (!editingNode) return;
+  useEffect(() => {
+    if (!editingNode) return;
 
-  const timer = setTimeout(async () => {
-    setIsSearchLoading(true);
-    try {
-      const limit = 10;
-      // results is now the object { users: [], pagination: {} }
-      const response = await hierarchyService.getHierarchyUsers({
-        search,
-        page,
-        limit,
-      });
+    const timer = setTimeout(async () => {
+      setIsSearchLoading(true);
+      try {
+        const limit = 10;
+        const response = await hierarchyService.getHierarchyUsers({
+          search,
+          page,
+          limit,
+        });
 
-      const newUsers = response.users || [];
-      const pagination = response.pagination;
+        const newUsers = response.users || [];
+        const pagination = response.pagination;
 
-      setAvailableUsers((prev) => {
-        if (page === 1) return newUsers;
-        const existingIds = new Set(prev.map((u) => u.id));
-        return [
-          ...prev,
-          ...newUsers.filter((u: ExternalUser) => !existingIds.has(u.id)),
-        ];
-      });
+        setAvailableUsers((prev) => {
+          if (page === 1) return newUsers;
+          const existingIds = new Set(prev.map((u) => u.id));
+          return [
+            ...prev,
+            ...newUsers.filter((u: ExternalUser) => !existingIds.has(u.id)),
+          ];
+        });
 
-      // Use the backend's pagination data for accuracy
-      setHasMore(pagination.next !== null && page < pagination.totalPages);
-      
-    } catch (e) {
-      console.error("Search failed", e);
-      setHasMore(false);
-    } finally {
-      setIsSearchLoading(false);
-      isFetchingRef.current = false;
-    }
-  }, 400);
+        setHasMore(pagination.next !== null && page < pagination.totalPages);
+      } catch (e) {
+        console.error("Search failed", e);
+        setHasMore(false);
+      } finally {
+        setIsSearchLoading(false);
+        isFetchingRef.current = false;
+      }
+    }, 400);
 
-  return () => clearTimeout(timer);
-}, [search, page, editingNode]);
+    return () => clearTimeout(timer);
+  }, [search, page, editingNode]);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -148,7 +147,9 @@ useEffect(() => {
             <Loader />
           ) : (
             <div
-              className={`inline-flex min-w-full justify-center ${layout === "vertical" ? "flex-col items-center" : "flex-row items-start"}`}
+              className={`inline-flex min-w-full justify-center ${
+                layout === "vertical" ? "flex-col items-center" : "flex-row items-start"
+              }`}
             >
               {roots.map((root) => (
                 <TreeNode
@@ -156,6 +157,7 @@ useEffect(() => {
                   node={root}
                   layout={layout}
                   expandedIds={expandedIds}
+                  isRoot={true} // Marked as Root
                   onEdit={(node: Employee) => {
                     handleCancel();
                     setEditingNode(node);
@@ -186,7 +188,6 @@ useEffect(() => {
           )}
         </main>
 
-        {/* Modals & Dialogs remain here for scope accessibility */}
         {editingNode && (
           <EditModal
             node={editingNode}
