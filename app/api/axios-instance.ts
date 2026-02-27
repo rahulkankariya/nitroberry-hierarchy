@@ -5,13 +5,12 @@ const api = axios.create({
   timeout: 10000,
   headers: { 
     "Content-Type": "application/json",
-    // Adding the x-api-key from environment variables
     "x-api-key": process.env.NEXT_PUBLIC_API_KEY 
   },
 });
 
+// 1. Request Interceptor: Attach Token
 api.interceptors.request.use((config) => {
-  // Ensure we are on the client side before accessing localStorage
   if (typeof window !== "undefined") {
     const token = localStorage.getItem("token");
     if (token) {
@@ -20,5 +19,22 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// 2. Response Interceptor: Flatten Data & Handle 401
+api.interceptors.response.use(
+  (response) => {
+    // This removes the need to write .data.data in your services
+    return response.data;
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+        window.location.href = "/login"; 
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;
