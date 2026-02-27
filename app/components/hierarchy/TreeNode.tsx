@@ -71,7 +71,7 @@ export function TreeNode({
               </button>
               <button
                 onClick={() => onEdit(node)}
-                className="p-2 bg-indigo-50 text-indigo-600 rounded-xl hover:bg-indigo-600 hover:text-white transition-all"
+                className="p-2 bg-indigo-50 text-[#7f56d9] rounded-xl hover:bg-[#7f56d9] hover:text-white transition-all"
                 title="Edit"
               >
                 <Pencil size={15} />

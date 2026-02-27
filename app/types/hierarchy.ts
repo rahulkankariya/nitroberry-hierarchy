@@ -11,8 +11,9 @@ export interface Employee {
 
 export interface ExternalUser {
   id: string;
-  name: string;
-  email: string;
+  firstName: string;
+  lastName: string;
+  jobTitle: string;
   title?: string;
   avatarUrl?: string;
 }

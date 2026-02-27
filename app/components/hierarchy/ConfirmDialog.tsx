@@ -33,7 +33,7 @@ export const ConfirmDialog = ({
         >
           <div className="flex items-center gap-3 mb-4">
             <div
-              className={`p-2 rounded-lg ${variant === "danger" ? "bg-red-50 text-red-600" : "bg-indigo-50 text-indigo-600"}`}
+              className={`p-2 rounded-lg ${variant === "danger" ? "bg-red-50 text-red-600" : "bg-indigo-50 text-[#7f56d9]"}`}
             >
               <AlertTriangle size={24} />
             </div>
@@ -50,7 +50,7 @@ export const ConfirmDialog = ({
             </button>
             <button
               onClick={onConfirm}
-              className={`flex-1 px-4 py-2 rounded-xl font-semibold text-white ${variant === "danger" ? "bg-red-500" : "bg-indigo-600"}`}
+              className={`flex-1 px-4 py-2 rounded-xl font-semibold text-white ${variant === "danger" ? "bg-red-500" : "bg-[#7f56d9]"}`}
             >
               {" "}
               {confirmLabel}{" "}
