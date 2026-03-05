@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { Columns, Rows, LogOut, Menu, X } from "lucide-react";
+import { Columns, Rows, LogOut, Menu, X, Loader2, CalendarSync } from "lucide-react";
 import { authService } from "@/app/api/auth-service";
 import { Button } from "../../components/common/button";
 import { Logo } from "../common/logo";
+import { useCalendarSync } from "@/app/hooks/useCalendarSync";
 
 interface HierarchyHeaderProps {
   layout: "vertical" | "horizontal";
@@ -20,7 +21,7 @@ export const HierarchyHeader: React.FC<HierarchyHeaderProps> = ({
   onCollapseAll,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+const { startSync, isSyncing } = useCalendarSync();
   // Helper to trigger actions and close menu on mobile
   const handleMobileAction = (action: () => void) => {
     action();
@@ -40,6 +41,17 @@ export const HierarchyHeader: React.FC<HierarchyHeaderProps> = ({
         {/* DESKTOP CONTROLS (Hidden on Mobile) */}
         <div className="hidden md:flex items-center gap-6">
           <div className="flex items-center gap-3">
+            {/* Google Calender sync */}
+            <div className="flex bg-[#f4f0ff] p-1 rounded-md border border-[#e9dffc] gap-1 shadow-sm">
+              <button
+          onClick={() => startSync()}
+          disabled={isSyncing}
+          className="flex items-center gap-2 px-4 py-2 bg-[#f4f0ff] border border-[#e9dffc] text-[#7f56d9] rounded-md text-xs font-bold transition-all hover:bg-[#7f56d9] hover:text-white disabled:opacity-50"
+        >
+          {isSyncing ? <Loader2 size={14} className="animate-spin" /> : <CalendarSync size={14} />}
+          {isSyncing ? "SYNCING..." : "GOOGLE SYNC"}
+        </button>
+            </div>
             {/* View Controls: Expand/Collapse */}
             <div className="flex bg-slate-100 p-1 rounded-md border border-slate-200 shadow-sm">
               <button
